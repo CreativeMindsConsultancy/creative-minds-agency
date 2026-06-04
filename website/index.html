@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Creative Minds Consultancy — AI-powered web design and intelligent business solutions for Irish SMEs. Based in Dublin, Ireland." />
+  <title>Creative Minds Consultancy — Elevate Your Brand</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FAFAF8;
+      color: #1A1A1A;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Tokens ── */
+    :root {
+      --bg:          #FAFAF8;
+      --bg-alt:      #F2EDE3;
+      --dark:        #111111;
+      --dark-2:      #1C1C1C;
+      --text:        #1A1A1A;
+      --muted:       #6B6762;
+      --accent:      #C4974A;
+      --accent-dk:   #A47A35;
+      --accent-lt:   rgba(196,151,74,0.12);
+      --blue:        #4A87C4;
+      --border:      #DED8CE;
+      --white:       #FFFFFF;
+      --sh-sm:       0 2px 14px rgba(0,0,0,0.06);
+      --sh-md:       0 8px 32px rgba(0,0,0,0.09);
+      --sh-lg:       0 20px 60px rgba(0,0,0,0.14);
+      --r:           3px;
+      --ease:        0.3s ease;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+    section { padding: 120px 0; }
+
+    /* ── Typography ── */
+    .display {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(54px, 7.5vw, 92px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: clamp(34px, 3.8vw, 50px);
+      line-height: 1.18;
+      letter-spacing: -0.01em;
+    }
+    .label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .rule { width: 44px; height: 1px; background: var(--accent); }
+    .rule-center { margin: 20px auto 0; }
+
+    /* ── Reveal animation ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 15px 34px;
+      font-family: 'Inter', sans-serif; font-size: 12px;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      border-radius: var(--r); border: none; cursor: pointer;
+      transition: all var(--ease); white-space: nowrap;
+    }
+    .btn-gold { background: var(--accent); color: #fff; }
+    .btn-gold:hover {
+      background: var(--accent-dk); transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(196,151,74,0.4);
+    }
+    .btn-outline-light { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.45); }
+    .btn-outline-light:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+
+    /* ════════════════════════════════════════
+       NAVIGATION
+    ════════════════════════════════════════ */
+    #nav {
+      position: fixed; inset: 0 0 auto 0; z-index: 900;
+      padding: 24px 0;
+      transition: padding 0.4s ease, background 0.4s ease,
+                  box-shadow 0.4s ease, border-color 0.4s ease;
+      border-bottom: 1px solid transparent;
+    }
+    #nav.stuck {
+      background: rgba(250,250,248,0.97);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      padding: 14px 0; border-color: var(--border); box-shadow: var(--sh-sm);
+    }
+    .nav-row { display: flex; align-items: center; justify-content: space-between; }
+
+    /* Logo – dual state */
+    .nav-logo { display: flex; align-items: center; }
+    .nav-logo-text {
+      font-family: 'Cormorant Garamond', serif; font-size: 17px;
+      font-weight: 400; letter-spacing: 0.07em; color: #fff;
+      transition: opacity var(--ease);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo-text svg { flex-shrink: 0; }
+    .nav-logo-img {
+      display: none; height: 40px; width: auto;
+      mix-blend-mode: multiply; /* removes white bg on cream nav */
+    }
+    #nav.stuck .nav-logo-text { display: none; }
+    #nav.stuck .nav-logo-img { display: block; }
+
+    .nav-links { display: flex; align-items: center; gap: 38px; }
+    .nav-links a {
+      font-size: 11.5px; font-weight: 500; letter-spacing: 0.13em;
+      text-transform: uppercase; color: rgba(255,255,255,0.8);
+      transition: color var(--ease); position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--accent);
+      transition: width var(--ease);
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover::after { width: 100%; }
+    #nav.stuck .nav-links a { color: var(--muted); }
+    #nav.stuck .nav-links a:hover { color: var(--text); }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5.5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .hamburger span { display: block; width: 26px; height: 1.5px; background: #fff; transition: all var(--ease); }
+    #nav.stuck .hamburger span { background: var(--text); }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mob-nav {
+      display: none; position: fixed; inset: 0; background: var(--dark);
+      z-index: 800; flex-direction: column; align-items: center;
+      justify-content: center; gap: 44px;
+    }
+    .mob-nav.open { display: flex; }
+    .mob-nav a {
+      font-family: 'Cormorant Garamond', serif; font-size: 40px;
+      font-weight: 300; color: #fff; letter-spacing: 0.04em;
+      transition: color var(--ease);
+    }
+    .mob-nav a:hover { color: var(--accent); }
+
+    /* ════════════════════════════════════════
+       HERO
+    ════════════════════════════════════════ */
+    #home {
+      min-height: 100vh; background: var(--dark);
+      background-image:
+        radial-gradient(ellipse at 20% 65%, rgba(196,151,74,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(74,135,196,0.05) 0%, transparent 45%);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden; padding: 0;
+    }
+
+    /* Geometric art layer */
+    .hero-art {
+      position: absolute; inset: 0;
+      pointer-events: none; overflow: hidden;
+    }
+    .hero-mark-svg {
+      position: absolute;
+      right: -8%; top: 50%; transform: translateY(-50%);
+      width: min(58%, 680px);
+      opacity: 1;
+    }
+    /* Rotating outer ring on the SVG */
+    .ring-spin {
+      transform-origin: 300px 300px;
+      animation: ringSpin 90s linear infinite;
+    }
+    .ring-spin-rev {
+      transform-origin: 300px 300px;
+      animation: ringSpin 60s linear infinite reverse;
+    }
+    @keyframes ringSpin { to { transform: rotate(360deg); } }
+
+    /* Floating diamonds */
+    .hero-gem {
+      position: absolute;
+      border: 1px solid var(--accent);
+      transform: rotate(45deg);
+    }
+    .gem-1 { width:10px; height:10px; top:18%; left:6%;  opacity:0.45; animation:gemFloat 7s  ease-in-out infinite; }
+    .gem-2 { width: 6px; height: 6px; top:68%; left:3%;  opacity:0.35; animation:gemFloat 9s  ease-in-out infinite 1.8s; }
+    .gem-3 { width:14px; height:14px;top:78%; left:22%; opacity:0.22; animation:gemFloat 11s ease-in-out infinite 3.2s; }
+    .gem-4 { width: 8px; height: 8px; top:35%; left:30%; opacity:0.30; animation:gemFloat 8s  ease-in-out infinite 0.6s; }
+    .gem-5 { width: 5px; height: 5px; top:55%; left:48%; opacity:0.25; animation:gemFloat 10s ease-in-out infinite 2.4s; }
+    @keyframes gemFloat {
+      0%,100% { transform: rotate(45deg) translateY(0); }
+      50%      { transform: rotate(45deg) translateY(-14px); }
+    }
+
+    /* Diagonal accent line */
+    .hero-diag {
+      position: absolute; width: 1px; height: 38%;
+      background: linear-gradient(to bottom, transparent, rgba(196,151,74,0.25), transparent);
+      top: 18%; left: 46%; transform: rotate(12deg);
+    }
+
+    .hero-wrap {
+      position: relative; z-index: 1;
+      padding: 160px 0 110px; max-width: 780px;
+    }
+    .hero-eyebrow { display:flex; align-items:center; gap:18px; margin-bottom:44px; }
+    .hero-eyebrow-line { width:48px; height:1px; background:var(--accent); }
+    .hero-eyebrow span { font-size:11px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--accent); }
+
+    .hero-headline { color:#fff; margin-bottom:34px; }
+    .hero-headline em { color:var(--accent); }
+    .hero-sub {
+      font-size:17px; font-weight:300; color:rgba(255,255,255,0.58);
+      max-width:480px; line-height:1.78; letter-spacing:0.01em; margin-bottom:52px;
+    }
+    .hero-cta { display:flex; gap:16px; flex-wrap:wrap; }
+
+    .hero-scroll {
+      position:absolute; bottom:44px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+      color:rgba(255,255,255,0.28); font-size:9.5px; letter-spacing:0.25em; text-transform:uppercase;
+    }
+    .hero-scroll-bar {
+      width:1px; height:44px;
+      background:linear-gradient(to bottom,rgba(255,255,255,0.35),transparent);
+      animation:scrollPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:.3;transform:scaleY(1)} 50%{opacity:.9;transform:scaleY(.65)} }
+
+    /* ════════════════════════════════════════
+       STATS STRIP
+    ════════════════════════════════════════ */
+    .stats-strip {
+      background: var(--dark-2);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 28px 0;
+    }
+    .stats-strip-inner {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; flex-wrap: wrap;
+    }
+    .strip-stat {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 48px;
+      font-size: 13px; color: rgba(255,255,255,0.5);
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .strip-stat:last-child { border-right: none; }
+    .strip-stat strong {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 300; color: var(--accent);
+      line-height: 1;
+    }
+
+    /* ════════════════════════════════════════
+       SECTION GEOMETRY — shared divider
+    ════════════════════════════════════════ */
+    .geo-divider {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; margin: 0 auto 72px;
+    }
+    .geo-divider span {
+      font-size: 8px; color: var(--accent); letter-spacing: 0.3em;
+      transform: rotate(45deg); display: inline-block;
+      font-weight: 600;
+    }
+    .geo-divider-line {
+      width: 80px; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(196,151,74,0.4), transparent);
+    }
+
+    .section-head { text-align:center; margin-bottom: 16px; }
+    .section-head .label { margin-bottom:18px; }
+
+    /* ════════════════════════════════════════
+       WHO WE HELP
+    ════════════════════════════════════════ */
+    #who { background:var(--bg-alt); }
+    .who-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+    .who-card {
+      background:var(--white); border:1px solid var(--border);
+      border-radius:var(--r); padding:44px 28px 38px;
+      text-align:center; transition:all var(--ease);
+      position:relative; overflow:hidden;
+    }
+    /* Corner accent (top-right) revealed on hover */
+    .who-card::after {
+      content:''; position:absolute; top:-1px; right:-1px;
+      width:28px; height:28px;
+      border-top:2px solid var(--accent); border-right:2px solid var(--accent);
+      opacity:0; transition:opacity var(--ease);
+    }
+    .who-card:hover { transform:translateY(-7px); box-shadow:var(--sh-lg); border-color:rgba(196,151,74,0.3); }
+    .who-card:hover::after { opacity:1; }
+    .who-icon { width:52px; height:52px; color:var(--accent); margin:0 auto 26px; }
+    .who-card h3 { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:500; color:var(--text); line-height:1.35; }
+
+    /* ════════════════════════════════════════
+       SERVICES
+    ════════════════════════════════════════ */
+    #services { background:var(--white); }
+    .services-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; }
+    .svc-col-head { margin-bottom:36px; }
+    .svc-col-head .label { margin-bottom:12px; }
+    .svc-col-head h3 { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:400; color:var(--text); line-height:1.25; }
+    .svc-stack { display:flex; flex-direction:column; gap:18px; }
+    .svc-card {
+      background:var(--bg); border:1px solid var(--border);
+      border-radius:var(--r); padding:30px;
+      position:relative; overflow:hidden; transition:all var(--ease);
+    }
+    .svc-card::before {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+      background:var(--accent); transform:scaleY(0); transform-origin:bottom;
+      transition:transform var(--ease);
+    }
+    /* Diagonal lines texture (top-right corner) */
+    .svc-card::after {
+      content:''; position:absolute; top:0; right:0; width:80px; height:80px;
+      background-image: repeating-linear-gradient(
+        135deg, transparent, transparent 6px,
+        rgba(196,151,74,0.06) 6px, rgba(196,151,74,0.06) 7px
+      );
+      opacity:0; transition:opacity var(--ease);
+    }
+    .svc-card:hover { transform:translateY(-4px); box-shadow:var(--sh-md); }
+    .svc-card:hover::before { transform:scaleY(1); }
+    .svc-card:hover::after { opacity:1; }
+    .svc-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+    .svc-card h4 { font-family:'Cormorant Garamond',serif; font-size:21px; font-weight:500; color:var(--text); line-height:1.25; }
+    .svc-price { font-size:17px; font-weight:600; color:var(--accent); white-space:nowrap; margin-left:12px; }
+    .svc-price sub { font-size:12px; font-weight:400; color:var(--muted); vertical-align:baseline; }
+    .svc-desc { font-size:13.5px; color:var(--muted); line-height:1.72; margin-bottom:14px; }
+    .svc-feats { display:flex; flex-direction:column; gap:7px; }
+    .svc-feats li { font-size:12.5px; color:var(--muted); display:flex; align-items:center; gap:10px; }
+    .svc-feats li::before { content:''; flex-shrink:0; width:16px; height:1px; background:var(--accent); }
+
+    /* ════════════════════════════════════════
+       AI SOLUTIONS
+    ════════════════════════════════════════ */
+    #ai { background:var(--dark); position:relative; overflow:hidden; }
+    .ai-bg-geo {
+      position:absolute; inset:0; pointer-events:none; overflow:hidden;
+    }
+    .ai-bg-geo svg { position:absolute; opacity:0.5; }
+
+    .ai-top { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:end; margin-bottom:80px; position:relative; z-index:1; }
+    .ai-top .label { margin-bottom:18px; }
+    .ai-top .heading { color:#fff; margin-top:0; }
+    .ai-top p { font-size:15px; font-weight:300; color:rgba(255,255,255,0.52); line-height:1.85; }
+
+    .ai-steps-wrap { position:relative; z-index:1; margin-bottom:60px; }
+    .ai-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+
+    /* Connector line between steps */
+    .ai-connector {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:28px;
+      margin-bottom: -14px; position:relative; z-index:2;
+    }
+    .ai-connector-line {
+      display:flex; align-items:center; justify-content:flex-end; padding-right:0;
+    }
+    .ai-connector-line:last-child { display:none; }
+    .ai-connector-line::after {
+      content:''; display:block;
+      width:calc(100% + 28px); height:1px;
+      background:linear-gradient(to right, rgba(196,151,74,0.2), rgba(196,151,74,0.05));
+      margin-right:-28px;
+    }
+
+    .ai-step {
+      padding:40px 32px; border:1px solid rgba(255,255,255,0.07);
+      border-radius:var(--r); transition:all var(--ease); position:relative;
+    }
+    .ai-step:hover { border-color:rgba(196,151,74,0.35); background:rgba(255,255,255,0.02); }
+    .ai-step-num {
+      font-family:'Cormorant Garamond',serif; font-size:68px; font-weight:300;
+      font-style:italic; color:rgba(196,151,74,0.15); line-height:1; margin-bottom:20px;
+    }
+    .ai-step h4 { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:400; color:#fff; margin-bottom:12px; }
+    .ai-step p { font-size:13.5px; color:rgba(255,255,255,0.46); line-height:1.78; }
+
+    .ai-who {
+      background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07);
+      border-radius:var(--r); padding:48px;
+      display:flex; align-items:flex-start; gap:64px; position:relative; z-index:1;
+    }
+    .ai-who-label h4 { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:400; color:#fff; margin-bottom:8px; }
+    .ai-who-label p { font-size:13px; color:rgba(255,255,255,0.38); line-height:1.6; }
+    .ai-tags { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .ai-tag {
+      padding:8px 18px; border:1px solid rgba(196,151,74,0.3); border-radius:100px;
+      font-size:12px; color:rgba(255,255,255,0.65); letter-spacing:0.04em;
+      transition:all var(--ease);
+    }
+    .ai-tag:hover { border-color:var(--accent); color:var(--accent); }
+
+    /* ════════════════════════════════════════
+       PORTFOLIO
+    ════════════════════════════════════════ */
+    #portfolio { background:var(--bg-alt); }
+    .port-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+    .port-card {
+      background:var(--white); border:1px solid var(--border);
+      border-radius:var(--r); overflow:hidden; transition:all var(--ease);
+    }
+    .port-card:hover { transform:translateY(-8px); box-shadow:var(--sh-lg); }
+    .port-thumb {
+      height:230px; display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:hidden;
+    }
+    .port-thumb-1 { background:linear-gradient(140deg, #0d1b33 0%, #162345 55%, #0d2040 100%); }
+    .port-thumb-2 { background:linear-gradient(140deg, #121212 0%, #1a2336 55%, #162240 100%); }
+    .port-thumb-3 { background:linear-gradient(140deg, #1a0e06 0%, #261808 55%, #3a2510 100%); }
+    /* Diagonal lines texture overlay on thumbnails */
+    .port-thumb::before {
+      content:''; position:absolute; inset:0; z-index:1;
+      background-image: repeating-linear-gradient(
+        45deg, transparent, transparent 30px,
+        rgba(255,255,255,0.025) 30px, rgba(255,255,255,0.025) 31px
+      );
+    }
+    /* Corner frame */
+    .port-thumb::after {
+      content:''; position:absolute; top:18px; right:18px; z-index:2;
+      width:36px; height:36px;
+      border-top:1px solid rgba(255,255,255,0.2); border-right:1px solid rgba(255,255,255,0.2);
+    }
+    .port-thumb-text {
+      font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:300;
+      font-style:italic; color:rgba(255,255,255,0.2); letter-spacing:0.06em;
+      text-align:center; padding:20px; z-index:3; position:relative;
+    }
+    .port-body { padding:32px; }
+    .port-tag { font-size:10px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+    .port-body h3 { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:400; color:var(--text); margin-bottom:10px; }
+    .port-body p { font-size:13.5px; color:var(--muted); line-height:1.72; margin-bottom:24px; }
+    .port-link {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:11.5px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase;
+      color:var(--accent); transition:gap var(--ease);
+    }
+    .port-link:hover { gap:13px; }
+    .port-link svg { width:15px; height:15px; }
+
+    /* ════════════════════════════════════════
+       ABOUT
+    ════════════════════════════════════════ */
+    #about { background:var(--white); }
+    .about-inner { display:grid; grid-template-columns:5fr 7fr; gap:100px; align-items:center; }
+
+    /* Logo display panel */
+    .about-logo-panel {
+      position:relative;
+    }
+    .about-logo-frame {
+      background:var(--bg-alt); border:1px solid var(--border);
+      border-radius:var(--r); padding:52px 44px;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:hidden;
+    }
+    /* Geometric background in the frame */
+    .about-logo-frame::before {
+      content:''; position:absolute; inset:0;
+      background-image: repeating-linear-gradient(
+        45deg, transparent, transparent 20px,
+        rgba(196,151,74,0.04) 20px, rgba(196,151,74,0.04) 21px
+      );
+    }
+    .about-logo-frame::after {
+      content:''; position:absolute; bottom:0; left:0; right:0;
+      height:3px; background:linear-gradient(to right, var(--accent), transparent);
+    }
+    .about-logo-frame img { max-width:100%; mix-blend-mode:multiply; position:relative; z-index:1; }
+
+    /* Corner bracket decorations */
+    .about-corner {
+      position:absolute; width:24px; height:24px;
+    }
+    .about-corner-tl { top:-1px; left:-1px; border-top:2px solid var(--accent); border-left:2px solid var(--accent); }
+    .about-corner-br { bottom:-1px; right:-1px; border-bottom:2px solid var(--accent); border-right:2px solid var(--accent); }
+
+    .about-copy .label { margin-bottom:18px; }
+    .about-copy .heading { margin-bottom:10px; }
+    .about-copy .rule { margin-bottom:30px; }
+    .about-copy p { font-size:15px; color:var(--muted); line-height:1.88; margin-bottom:18px; }
+    .about-stats {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:28px;
+      margin-top:44px; padding-top:44px; border-top:1px solid var(--border);
+    }
+    .stat-num { font-family:'Cormorant Garamond',serif; font-size:44px; font-weight:300; color:var(--accent); line-height:1; margin-bottom:8px; }
+    .stat-label { font-size:11px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); line-height:1.5; }
+
+    /* ════════════════════════════════════════
+       CONTACT
+    ════════════════════════════════════════ */
+    #contact { background:var(--bg-alt); }
+    .contact-inner { display:grid; grid-template-columns:5fr 7fr; gap:100px; align-items:start; }
+    .contact-copy .label { margin-bottom:18px; }
+    .contact-copy .heading { margin-bottom:10px; }
+    .contact-copy .rule { margin-bottom:30px; }
+    .contact-copy p { font-size:15px; color:var(--muted); line-height:1.85; margin-bottom:40px; }
+    .contact-details { display:flex; flex-direction:column; gap:18px; }
+    .contact-item { display:flex; align-items:center; gap:16px; }
+    .contact-icon {
+      width:40px; height:40px; border:1px solid var(--border); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--accent); flex-shrink:0; background:var(--white);
+    }
+    .contact-item span { font-size:14px; color:var(--text); }
+    .contact-form-box {
+      background:var(--white); border:1px solid var(--border);
+      border-radius:var(--r); padding:52px; position:relative; overflow:hidden;
+    }
+    /* Top accent strip on form */
+    .contact-form-box::before {
+      content:''; position:absolute; top:0; left:0; right:0;
+      height:3px; background:linear-gradient(to right, var(--accent), rgba(196,151,74,0.2));
+    }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .form-group { margin-bottom:22px; }
+    .form-group label { display:block; font-size:10.5px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+    .form-group input, .form-group textarea {
+      width:100%; padding:13px 16px; border:1px solid var(--border);
+      border-radius:var(--r); background:var(--bg); font-family:'Inter',sans-serif;
+      font-size:14px; color:var(--text); outline:none; transition:border-color var(--ease); appearance:none;
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color:#b0a89c; }
+    .form-group input:focus, .form-group textarea:focus { border-color:var(--accent); }
+    .form-group textarea { height:148px; resize:vertical; }
+    .btn-submit { width:100%; justify-content:center; margin-top:6px; }
+    .form-success { display:none; text-align:center; padding:56px 24px; }
+    .form-success.show { display:block; }
+    .form-success svg { color:var(--accent); margin:0 auto 24px; }
+    .form-success h4 { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:400; margin-bottom:12px; }
+    .form-success p { font-size:14px; color:var(--muted); line-height:1.7; }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    footer { background:var(--dark); padding:72px 0 40px; }
+    .footer-top {
+      display:flex; justify-content:space-between; align-items:flex-start;
+      padding-bottom:52px; border-bottom:1px solid rgba(255,255,255,0.07); margin-bottom:36px;
+    }
+    .footer-logo-wrap img {
+      height:48px; width:auto;
+      filter:brightness(0) invert(1); /* white version on dark bg */
+      opacity:0.85; margin-bottom:14px;
+    }
+    .footer-tagline { font-size:11px; font-weight:400; letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.28); }
+    .footer-social { display:flex; gap:10px; }
+    .footer-social a {
+      width:40px; height:40px; border:1px solid rgba(255,255,255,0.1); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,0.45); transition:all var(--ease);
+    }
+    .footer-social a:hover { border-color:var(--accent); color:var(--accent); }
+    .footer-bottom { display:flex; justify-content:space-between; align-items:center; }
+    .footer-copy { font-size:12px; color:rgba(255,255,255,0.28); }
+    .footer-links { display:flex; gap:28px; }
+    .footer-links a { font-size:12px; color:rgba(255,255,255,0.28); letter-spacing:0.05em; transition:color var(--ease); }
+    .footer-links a:hover { color:rgba(255,255,255,0.6); }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .container { padding: 0 32px; }
+      .ai-top { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 900px) {
+      section { padding: 88px 0; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-mark-svg { display: none; }
+      .who-grid { grid-template-columns: repeat(2, 1fr); }
+      .services-grid { grid-template-columns: 1fr; gap: 56px; }
+      .ai-steps { grid-template-columns: 1fr; gap: 18px; }
+      .ai-connector { display: none; }
+      .ai-who { flex-direction: column; gap: 30px; padding: 34px; }
+      .port-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+      .about-inner { grid-template-columns: 1fr; gap: 52px; }
+      .contact-inner { grid-template-columns: 1fr; gap: 52px; }
+      .contact-form-box { padding: 36px 28px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { flex-direction: column; gap: 36px; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+      .stats-strip-inner { flex-direction: column; gap: 0; }
+      .strip-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); width: 100%; justify-content: center; }
+      .strip-stat:last-child { border-bottom: none; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 0 22px; }
+      section { padding: 72px 0; }
+      .who-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .hero-gem { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ MOBILE NAV ══ -->
+<nav class="mob-nav" id="mob-nav">
+  <a href="#home"      class="mob-link">Home</a>
+  <a href="#services"  class="mob-link">Services</a>
+  <a href="#ai"        class="mob-link">AI Solutions</a>
+  <a href="#portfolio" class="mob-link">Portfolio</a>
+  <a href="#about"     class="mob-link">About</a>
+  <a href="#contact"   class="mob-link">Contact</a>
+</nav>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-row">
+      <a href="#home" class="nav-logo">
+        <!-- Dark / transparent state -->
+        <span class="nav-logo-text">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="7.5" stroke="rgba(196,151,74,0.6)" stroke-width="0.6"/>
+            <circle cx="9" cy="9" r="5"   stroke="rgba(196,151,74,0.5)" stroke-width="0.6"/>
+            <circle cx="9" cy="9" r="2.5" stroke="rgba(196,151,74,0.7)" stroke-width="0.7"/>
+            <circle cx="9" cy="9" r="0.9" fill="rgba(196,151,74,0.9)"/>
+          </svg>
+          Creative Minds Consultancy
+        </span>
+        <!-- Light / stuck state -->
+        <img class="nav-logo-img" src="logo.jpeg" alt="Creative Minds Consultancy" />
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#ai">AI Solutions</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="home" aria-label="Hero">
+
+  <!-- Geometric art layer -->
+  <div class="hero-art" aria-hidden="true">
+
+    <!-- Large circular mark (echoing logo spiral) -->
+    <svg class="hero-mark-svg" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="fadeEdge" cx="50%" cy="50%" r="50%">
+          <stop offset="55%" stop-color="#111111" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#111111" stop-opacity="1"/>
+        </radialGradient>
+      </defs>
+      <!-- Concentric rings -->
+      <circle cx="300" cy="300" r="50"  stroke="rgba(196,151,74,0.28)" stroke-width="1.2"/>
+      <circle cx="300" cy="300" r="90"  stroke="rgba(196,151,74,0.22)" stroke-width="1"/>
+      <circle cx="300" cy="300" r="130" stroke="rgba(196,151,74,0.17)" stroke-width="0.9"/>
+      <circle cx="300" cy="300" r="170" stroke="rgba(196,151,74,0.13)" stroke-width="0.8"/>
+      <circle cx="300" cy="300" r="210" stroke="rgba(196,151,74,0.09)" stroke-width="0.7"/>
+      <circle cx="300" cy="300" r="245" stroke="rgba(196,151,74,0.06)" stroke-width="0.6"/>
+      <!-- Rotating outer dashed ring -->
+      <circle cx="300" cy="300" r="270" stroke="rgba(196,151,74,0.05)" stroke-width="1"
+        stroke-dasharray="3 12" class="ring-spin"/>
+      <!-- Spokes: 8 at 45° intervals, r=50 to r=245 -->
+      <g stroke="rgba(196,151,74,0.07)" stroke-width="0.6">
+        <line x1="350" y1="300" x2="545" y2="300"/>
+        <line x1="335.4" y1="335.4" x2="473.2" y2="473.2"/>
+        <line x1="300" y1="350" x2="300" y2="545"/>
+        <line x1="264.6" y1="335.4" x2="126.8" y2="473.2"/>
+        <line x1="250" y1="300" x2="55" y2="300"/>
+        <line x1="264.6" y1="264.6" x2="126.8" y2="126.8"/>
+        <line x1="300" y1="250" x2="300" y2="55"/>
+        <line x1="335.4" y1="264.6" x2="473.2" y2="126.8"/>
+      </g>
+      <!-- Counter-rotating inner dashed ring -->
+      <circle cx="300" cy="300" r="160" stroke="rgba(196,151,74,0.06)" stroke-width="0.8"
+        stroke-dasharray="2 8" class="ring-spin-rev"/>
+      <!-- Center dot -->
+      <circle cx="300" cy="300" r="5" fill="rgba(196,151,74,0.5)"/>
+      <!-- Small orbit dots -->
+      <circle cx="300" cy="250" r="2.5" fill="rgba(196,151,74,0.35)" class="ring-spin"/>
+      <circle cx="350" cy="300" r="2"   fill="rgba(196,151,74,0.25)" class="ring-spin-rev"/>
+      <!-- Fade to edges -->
+      <circle cx="300" cy="300" r="300" fill="url(#fadeEdge)"/>
+    </svg>
+
+    <!-- Floating diamond shapes -->
+    <span class="hero-gem gem-1"></span>
+    <span class="hero-gem gem-2"></span>
+    <span class="hero-gem gem-3"></span>
+    <span class="hero-gem gem-4"></span>
+    <span class="hero-gem gem-5"></span>
+
+    <!-- Diagonal accent -->
+    <div class="hero-diag"></div>
+  </div>
+
+  <div class="container">
+    <div class="hero-wrap">
+      <div class="hero-eyebrow reveal">
+        <div class="hero-eyebrow-line"></div>
+        <span>Dublin, Ireland &nbsp;&middot;&nbsp; AI-First Agency</span>
+      </div>
+      <h1 class="display hero-headline reveal d1">
+        Elevate<br /><em>Your Brand</em>
+      </h1>
+      <p class="hero-sub reveal d2">
+        AI-powered web design and intelligent business solutions
+        for ambitious Irish SMEs ready to compete at the highest level.
+      </p>
+      <div class="hero-cta reveal d3">
+        <a href="#services" class="btn btn-gold">View Services</a>
+        <a href="#contact"  class="btn btn-outline-light">Get In Touch</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="hero-scroll-bar"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ══ STATS STRIP ══ -->
+<div class="stats-strip" aria-label="Agency stats">
+  <div class="container">
+    <div class="stats-strip-inner">
+      <div class="strip-stat reveal"><strong>10+</strong> Projects delivered</div>
+      <div class="strip-stat reveal d1"><strong>3</strong> Industries served</div>
+      <div class="strip-stat reveal d2"><strong>100%</strong> AI-first approach</div>
+      <div class="strip-stat reveal d3"><strong>IRL</strong> Based in Dublin</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WHO WE HELP ══ -->
+<section id="who">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="label">Who We Work With</p>
+      <h2 class="heading">Built for businesses<br />that mean business</h2>
+    </div>
+    <div class="geo-divider reveal">
+      <div class="geo-divider-line"></div>
+      <span>&#9670;</span>
+      <div class="geo-divider-line"></div>
+    </div>
+    <div class="who-grid">
+      <div class="who-card reveal d1">
+        <div class="who-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11M8 10v11M12 10v11M16 10v11"/>
+          </svg>
+        </div>
+        <h3>Property &amp;<br />Development</h3>
+      </div>
+      <div class="who-card reveal d2">
+        <div class="who-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+          </svg>
+        </div>
+        <h3>Financial<br />Services</h3>
+      </div>
+      <div class="who-card reveal d3">
+        <div class="who-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2M12 12v4M10 14h4"/>
+          </svg>
+        </div>
+        <h3>Professional<br />Services</h3>
+      </div>
+      <div class="who-card reveal d4">
+        <div class="who-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h3>SMEs &amp;<br />Startups</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══ -->
+<section id="services">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="label">What We Offer</p>
+      <h2 class="heading">Services designed<br />to grow your business</h2>
+    </div>
+    <div class="geo-divider reveal">
+      <div class="geo-divider-line"></div>
+      <span>&#9670;</span>
+      <div class="geo-divider-line"></div>
+    </div>
+    <div class="services-grid">
+      <div class="reveal d1">
+        <div class="svc-col-head">
+          <p class="label">01</p>
+          <h3>AI-Powered<br />Web Design</h3>
+        </div>
+        <div class="svc-stack">
+          <div class="svc-card">
+            <div class="svc-card-top"><h4>Starter Website</h4><div class="svc-price">&euro;1,495</div></div>
+            <p class="svc-desc">A clean, high-converting 5-page WordPress site that positions your business with confidence from day one.</p>
+            <ul class="svc-feats">
+              <li>5-page responsive WordPress build</li>
+              <li>Mobile-first design</li>
+              <li>On-page SEO foundation</li>
+              <li>Google Analytics &amp; Search Console</li>
+              <li>2 rounds of revisions</li>
+            </ul>
+          </div>
+          <div class="svc-card">
+            <div class="svc-card-top"><h4>Professional Site</h4><div class="svc-price">&euro;3,495</div></div>
+            <p class="svc-desc">A comprehensive multi-page WordPress site with advanced SEO and ongoing care — for businesses ready to grow.</p>
+            <ul class="svc-feats">
+              <li>Up to 12 pages, custom design</li>
+              <li>Advanced SEO strategy &amp; setup</li>
+              <li>Blog / news section</li>
+              <li>3-month care retainer included</li>
+              <li>Performance optimisation</li>
+            </ul>
+          </div>
+          <div class="svc-card">
+            <div class="svc-card-top"><h4>Growth Package</h4><div class="svc-price">&euro;5,995</div></div>
+            <p class="svc-desc">Premium custom design for businesses ready to own their market. Built for results, designed to impress.</p>
+            <ul class="svc-feats">
+              <li>Fully custom WordPress design</li>
+              <li>E-commerce ready (WooCommerce)</li>
+              <li>Full SEO content strategy</li>
+              <li>6-month retainer included</li>
+              <li>Quarterly performance reviews</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="svc-col-head">
+          <p class="label">02</p>
+          <h3>AI Solutions<br />for Business</h3>
+        </div>
+        <div class="svc-stack">
+          <div class="svc-card">
+            <div class="svc-card-top"><h4>AI Starter</h4><div class="svc-price">&euro;695</div></div>
+            <p class="svc-desc">Your first step into AI — a focused onboarding session and a custom toolkit built around your business.</p>
+            <ul class="svc-feats">
+              <li>Half-day AI onboarding session</li>
+              <li>Custom prompt library (10 prompts)</li>
+              <li>Tool recommendation report</li>
+              <li>2-week follow-up support</li>
+            </ul>
+          </div>
+          <div class="svc-card">
+            <div class="svc-card-top"><h4>AI Business Pack</h4><div class="svc-price">&euro;1,895</div></div>
+            <p class="svc-desc">A complete AI transformation — from processes and documents to presentations and automation.</p>
+            <ul class="svc-feats">
+              <li>Full-day onboarding workshop</li>
+              <li>AI-powered pitch deck design</li>
+              <li>Document control templates</li>
+              <li>Prompt library (30+ prompts)</li>
+              <li>Workflow automation setup</li>
+            </ul>
+          </div>
+          <div class="svc-card">
+            <div class="svc-card-top"><h4>AI Retainer</h4><div class="svc-price">&euro;425<sub>/mo</sub></div></div>
+            <p class="svc-desc">Ongoing AI strategy and support that keeps your business ahead of the curve, every single month.</p>
+            <ul class="svc-feats">
+              <li>Monthly AI strategy session</li>
+              <li>Prompt library updates</li>
+              <li>New tool evaluation &amp; rollout</li>
+              <li>Quarterly business AI review</li>
+              <li>Priority support access</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AI SOLUTIONS ══ -->
+<section id="ai">
+  <!-- Background dot grid -->
+  <div class="ai-bg-geo" aria-hidden="true">
+    <svg width="100%" height="100%" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice"
+         style="position:absolute;inset:0;">
+      <defs>
+        <pattern id="dotGrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <circle cx="20" cy="20" r="1" fill="rgba(196,151,74,0.18)"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dotGrid)"/>
+      <!-- Large faint ring top-right -->
+      <circle cx="1100" cy="100" r="280" fill="none" stroke="rgba(196,151,74,0.05)" stroke-width="1"/>
+      <circle cx="1100" cy="100" r="180" fill="none" stroke="rgba(196,151,74,0.06)" stroke-width="1"/>
+      <circle cx="1100" cy="100" r="80"  fill="none" stroke="rgba(196,151,74,0.08)" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <div class="container">
+    <div class="ai-top">
+      <div class="reveal">
+        <p class="label">AI Solutions</p>
+        <h2 class="heading" style="color:#fff;margin-top:18px;">What does AI onboarding<br />actually mean for<br />your business?</h2>
+      </div>
+      <div class="reveal d1">
+        <p>Most small businesses know AI matters — but don't know where to start. We bridge that gap, translating complex tools into practical systems your team can use from day one. No jargon. No wasted subscriptions. Just results.</p>
+      </div>
+    </div>
+
+    <!-- Step connector bar (desktop) -->
+    <div class="ai-connector" aria-hidden="true">
+      <div class="ai-connector-line"></div>
+      <div class="ai-connector-line"></div>
+      <div class="ai-connector-line"></div>
+    </div>
+
+    <div class="ai-steps-wrap">
+      <div class="ai-steps">
+        <div class="ai-step reveal d1">
+          <div class="ai-step-num">01</div>
+          <h4>Discover &amp; Diagnose</h4>
+          <p>We audit your current workflows, identify high-value AI opportunities, and map exactly where time and money are being lost.</p>
+        </div>
+        <div class="ai-step reveal d2">
+          <div class="ai-step-num">02</div>
+          <h4>Build &amp; Implement</h4>
+          <p>We build your custom AI toolkit — prompt libraries, document templates, automated workflows — tailored to your specific business.</p>
+        </div>
+        <div class="ai-step reveal d3">
+          <div class="ai-step-num">03</div>
+          <h4>Train &amp; Optimise</h4>
+          <p>We train your team hands-on and continuously refine your AI systems so they grow and evolve with your business.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-who reveal">
+      <div class="ai-who-label">
+        <h4>Who this is for</h4>
+        <p>Perfect for businesses that want<br />to move faster without hiring more.</p>
+      </div>
+      <div class="ai-tags">
+        <span class="ai-tag">Property firms</span>
+        <span class="ai-tag">Financial advisors</span>
+        <span class="ai-tag">Law firms</span>
+        <span class="ai-tag">Accountants</span>
+        <span class="ai-tag">SME founders</span>
+        <span class="ai-tag">Consultancies</span>
+        <span class="ai-tag">Startups</span>
+        <span class="ai-tag">Any ambitious business</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PORTFOLIO ══ -->
+<section id="portfolio">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="label">Our Work</p>
+      <h2 class="heading">Selected projects</h2>
+    </div>
+    <div class="geo-divider reveal">
+      <div class="geo-divider-line"></div>
+      <span>&#9670;</span>
+      <div class="geo-divider-line"></div>
+    </div>
+    <div class="port-grid">
+      <div class="port-card reveal d1">
+        <div class="port-thumb port-thumb-1">
+          <div class="port-thumb-text">Harcourt Capital</div>
+        </div>
+        <div class="port-body">
+          <p class="port-tag">Corporate Finance &nbsp;&middot;&nbsp; Website Design</p>
+          <h3>Harcourt Capital</h3>
+          <p>A premium corporate finance website built to reflect the authority and trust institutional clients demand — clean, conversion-focused, built for results.</p>
+          <a href="#contact" class="port-link">Enquire About This
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="port-card reveal d2">
+        <div class="port-thumb port-thumb-2">
+          <div class="port-thumb-text">Pineal Capital</div>
+        </div>
+        <div class="port-body">
+          <p class="port-tag">Compliance &nbsp;&middot;&nbsp; Website Redesign</p>
+          <h3>Pineal Capital</h3>
+          <p>A full redesign for a compliance-focused financial services firm — transforming a dated presence into a modern, credible platform that builds immediate client confidence.</p>
+          <a href="#contact" class="port-link">Enquire About This
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="port-card reveal d3">
+        <div class="port-thumb port-thumb-3">
+          <div class="port-thumb-text">Creative Minds</div>
+        </div>
+        <div class="port-body">
+          <p class="port-tag">Agency &nbsp;&middot;&nbsp; Brand &amp; Website</p>
+          <h3>Creative Minds Consultancy</h3>
+          <p>Our own home — a reflection of everything we stand for. Minimal, premium, and built entirely with AI-first principles from brand identity through to final code.</p>
+          <span class="port-link" style="cursor:default;">This Site
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <div class="container">
+    <div class="about-inner">
+
+      <!-- Logo display panel -->
+      <div class="about-logo-panel reveal">
+        <div class="about-logo-frame">
+          <div class="about-corner about-corner-tl"></div>
+          <div class="about-corner about-corner-br"></div>
+          <img src="logo.jpeg" alt="Creative Minds Consultancy" />
+        </div>
+      </div>
+
+      <div class="about-copy">
+        <p class="label reveal">About the Founder</p>
+        <h2 class="heading reveal d1">Built from<br />the inside out</h2>
+        <div class="rule reveal d1" style="margin-bottom:30px;"></div>
+        <p class="reveal d2">I'm Kimberley, founder of Creative Minds Consultancy. Based in Dublin, I built this agency after years working as an Executive Assistant at the highest levels of corporate Ireland — giving me a rare, first-hand understanding of what ambitious businesses actually need to succeed.</p>
+        <p class="reveal d2">What began as deep curiosity evolved into a mission. I taught myself web design, WordPress, SEO, and ultimately AI — building real, transferable skills through real-world projects. When AI tools began transforming how work gets done, I was already there, experimenting and applying.</p>
+        <p class="reveal d3">Today, Creative Minds Consultancy helps Irish SMEs access the same quality of digital presence and AI capability that was once reserved for large corporations — without the enterprise price tag or complexity.</p>
+        <div class="about-stats reveal d3">
+          <div><div class="stat-num">10+</div><p class="stat-label">Projects<br />delivered</p></div>
+          <div><div class="stat-num">AI</div><p class="stat-label">First approach<br />every time</p></div>
+          <div><div class="stat-num">IRL</div><p class="stat-label">Dublin-based,<br />Ireland-focused</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="contact-copy reveal">
+        <p class="label">Get In Touch</p>
+        <h2 class="heading">Let's build<br />something great</h2>
+        <div class="rule" style="margin-bottom:30px;"></div>
+        <p>Whether you need a new website, an AI strategy, or simply want to explore what's possible — we'd love to hear from you. Based in Dublin, working with businesses across Ireland.</p>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <span>hello@creativeminds.ie</span>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <span>Dublin, Ireland</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-box reveal d1">
+        <form id="cform" novalidate>
+          <div class="form-row">
+            <div class="form-group"><label for="fname">First Name</label><input type="text" id="fname" placeholder="Jane" required /></div>
+            <div class="form-group"><label for="lname">Last Name</label><input type="text" id="lname" placeholder="Smith" required /></div>
+          </div>
+          <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" placeholder="jane@company.ie" required /></div>
+          <div class="form-group"><label for="company">Company</label><input type="text" id="company" placeholder="Your company name" /></div>
+          <div class="form-group"><label for="msg">Message</label><textarea id="msg" placeholder="Tell us about your project..."></textarea></div>
+          <button type="submit" class="btn btn-gold btn-submit">Send Message</button>
+        </form>
+        <div class="form-success" id="form-success">
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <h4>Message Sent</h4>
+          <p>Thank you for reaching out.<br />We'll be in touch within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-logo-wrap">
+        <img src="logo.jpeg" alt="Creative Minds Consultancy" />
+        <div class="footer-tagline">Elevate Your Brand</div>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/company/creative-minds-consultancy" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/>
+            <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Creative Minds Consultancy. All rights reserved.</p>
+      <nav class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('stuck', window.scrollY > 60), { passive: true });
+
+  // Hamburger
+  const burger  = document.getElementById('hamburger');
+  const mobNav  = document.getElementById('mob-nav');
+  burger.addEventListener('click', () => {
+    const open = mobNav.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', () => {
+    mobNav.classList.remove('open'); burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', false); document.body.style.overflow = '';
+  }));
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Hero reveals on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('#home .reveal').forEach((el, i) => {
+      setTimeout(() => el.classList.add('in'), i * 160);
+    });
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (!t) return;
+      e.preventDefault();
+      window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+    });
+  });
+
+  // Contact form
+  document.getElementById('cform').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('cform').style.display = 'none';
+    document.getElementById('form-success').classList.add('show');
+  });
+</script>
+</body>
+</html>
